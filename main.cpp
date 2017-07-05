@@ -21,13 +21,12 @@
 #define PROGRAM_INPUT ""
 #endif
 
-
 BF_CREATE_LIST_FROM_STRING(MyProgram, PROGRAM_CODE)
 BF_CREATE_LIST_FROM_STRING(MyInput, PROGRAM_INPUT)
 
 int main()
 {
-    using MyOutput = ::bf::Machine<MyProgram, MyInput>::Run::GetOutput;
-    std::cout << ::bf::ListToStr<MyOutput>() << std::endl;
+    using MyOutput = bf::Machine<MyProgram, MyInput>::Run::GetOutput;
+    std::cout << bf::ListToStr<MyOutput>() << std::endl;
     return 0;
 }

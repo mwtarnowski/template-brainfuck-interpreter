@@ -18,7 +18,6 @@ struct Data {
 
 using Zero = Data<0>;
 
-
 // ************************************************
 // Brainfuck instructions
 
@@ -32,7 +31,6 @@ using OpLoopBegin = Op<'['>;  // Jump forward to the matching ] if the cell is z
 using OpLoopEnd   = Op<']'>;  // Jump back to the matching [ if the cell is nonzero
 using OpReadChar  = Op<','>;  // Read a single input character
 using OpWriteChar = Op<'.'>;  // Write the memory cell to output
-
 
 // ************************************************
 // Fundamental data structures
@@ -51,7 +49,6 @@ struct CellList : List<Value, Next> {};
 template <typename Value>
 struct CellList<Value, Null> : CellList<Value, CellList<>> {};
 
-
 // ************************************************
 // Brainfuck memory model
 
@@ -65,7 +62,6 @@ struct CellTape {
     using MoveLeft  = CellTape<typename Left::Head, typename Left::Tail, CellList<Value, Right>>;
     using MoveRight = CellTape<typename Right::Head, CellList<Value, Left>, typename Right::Tail>;
 };
-
 
 // ************************************************
 // Handling forward jumps
@@ -91,7 +87,6 @@ struct OmitLoopImpl<List<OpLoopEnd, Code>, 1> {
 
 template <typename Code>
 using OmitLoop = typename OmitLoopImpl<Code>::Result;
-
 
 // ************************************************
 // Instructions handling
@@ -176,7 +171,6 @@ struct Step<List<OpReadChar, Code>, Input, Output, Stack, Memory>
     using NewMemory = typename Memory::template SetValue<typename Input::Head>;
 };
 
-
 // ************************************************
 // The core brainfuck processor
 
@@ -188,7 +182,6 @@ template <typename Code   = Null,
 struct Processor
 {
     using NextState = Step<Code, Input, Output, Stack, Memory>;
-
     using Apply = Processor<typename NextState::NewCode, 
                             typename NextState::NewInput, 
                             typename NextState::NewOutput, 
@@ -196,7 +189,6 @@ struct Processor
                             typename NextState::NewMemory>;
     
     using Run = typename Apply::Run;
-
     using GetOutput = Output;
 };
 
@@ -204,7 +196,7 @@ template <typename Input, typename Output, typename Stack, typename Memory>
 struct Processor<Null, Input, Output, Stack, Memory>
 {
     static_assert(std::is_same<Stack, Null>::value, "INTERNAL ERROR: non-empty stack");
-    using Apply = Processor<Null, Input, Output, Stack, Memory>;
+    using Apply = Processor<Null, Input, Output, Stack, Memory>; //NOP
     using Run = Apply;
     using GetOutput = Output;
 };

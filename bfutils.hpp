@@ -10,13 +10,11 @@
 
 namespace bf {
 
-
 // Wrapper for the core brainfuck processor
 
 template <typename Program, 
           typename Input = Null>
 using Machine = Processor<Program, Input>;
-
 
 
 // Lists constructing: creating a list from a sequence of characters
@@ -33,7 +31,6 @@ struct CreateListImpl<value, values...> {
 
 template <unsigned char... values>
 using CreateList = typename CreateListImpl<values...>::Result;
-
 
 
 // Lists constructing: creating a list from a string
@@ -56,7 +53,6 @@ struct StrToListImpl<Content, 0, Output> {
 
 template <typename Content>
 using StrToList = typename StrToListImpl<Content>::Result;
-
 
 
 // Converting a list to std::string
@@ -83,7 +79,6 @@ inline std::string ListToStr() {
 
 } //namespace bf
 
-
 // Shortcuts: cut here if you have an aversion to macros.
 
 #define BF_CREATE_LIST_FROM_CHARS(List, ...) \
@@ -92,6 +87,5 @@ using List = ::bf::CreateList<__VA_ARGS__>;
 #define BF_CREATE_LIST_FROM_STRING(List, String) \
 struct List##Content_ { constexpr static const char* Str() { return String; } }; \
 using List = ::bf::StrToList<List##Content_>;
-
 
 #endif //BRAINFUCK_UTILS_HPP
